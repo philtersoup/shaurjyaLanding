@@ -3,7 +3,7 @@ var delta = clock.getDelta(); // seconds.
 var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 var container, stats;
 
-var camera, scene, renderer;
+var camera, scene, renderer,effect;
 var row_geom, stand_geom, modelGroup;
 
 var mouseX = 0, mouseY = 0;
@@ -18,6 +18,22 @@ animate();
 
 function init() {
 
+  var toonMaterial;
+  var imgTexture = new THREE.TextureLoader().load( "https://github.com/mrdoob/three.js/tree/dev/examples/textures/planets/moon_1024.jpg" );
+				imgTexture.wrapS = imgTexture.wrapT = THREE.RepeatWrapping;
+				imgTexture.anisotropy = 16;
+				imgTexture = null;
+
+  var toonMaterial = new THREE.MeshToonMaterial( {
+								map: imgTexture,
+								bumpMap: imgTexture,
+								bumpScale: 1,
+								color: 0x4087ef,
+								specular: 0x333333,
+								reflectivity: 0.025,
+								shininess: 1
+								// envMap: 20
+							} );
   container = document.createElement( 'div' );
   document.body.appendChild( container );
 
@@ -28,10 +44,10 @@ function init() {
 
   scene = new THREE.Scene();
 
-  var ambient = new THREE.AmbientLight( 0x101030 );
-  scene.add( ambient );
+  // var ambient = new THREE.AmbientLight( 0x101030 );
+  // scene.add( ambient );
 
-  var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+  var directionalLight = new THREE.DirectionalLight( 0xffddee );
   directionalLight.position.set( 0, 0, 1 );
   scene.add( directionalLight );
 
@@ -56,9 +72,9 @@ function init() {
 
         //child.material.map = texture;
         stand_geom = child.geometry;
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
-        stand = new THREE.Mesh(stand_geom,material);
-        stand.position.y = 14;
+        // var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
+        stand = new THREE.Mesh(stand_geom,toonMaterial);
+        stand.position.y = 7;
         modelGroup.add(stand);
 
 
@@ -74,10 +90,10 @@ function init() {
 
         //child.material.map = texture;
         row_geom = child.geometry;
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
-        var r1 = new THREE.Mesh( row_geom, material );
-        var r2 = new THREE.Mesh( row_geom, material );
-        var r3 = new THREE.Mesh( row_geom, material );
+        // var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
+        var r1 = new THREE.Mesh( row_geom, toonMaterial );
+        var r2 = new THREE.Mesh( row_geom, toonMaterial );
+        var r3 = new THREE.Mesh( row_geom, toonMaterial );
         r2.position.y = 7;
         r3.position.y = 14;
         modelGroup.add(r1);
@@ -95,8 +111,10 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
 
-  renderer.setClearColor (0xdeef40, 1);
+  renderer.setClearColor (0xefb31c, 1);
   container.appendChild( renderer.domElement );
+
+  effect = new THREE.OutlineEffect( renderer );
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -139,5 +157,6 @@ function render() {
 
   camera.lookAt( scene.position );
 
-  renderer.render( scene, camera );
+  // renderer.render( scene, camera );
+  effect.render( scene, camera );
 }
