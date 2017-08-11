@@ -19,15 +19,15 @@ animate();
 function init() {
 
   var toonMaterial;
-  var imgTexture = new THREE.TextureLoader().load( "https://github.com/mrdoob/three.js/tree/dev/examples/textures/planets/moon_1024.jpg" );
+/*  var imgTexture = new THREE.TextureLoader().load( "https://github.com/mrdoob/three.js/tree/dev/examples/textures/planets/moon_1024.jpg" );
 				imgTexture.wrapS = imgTexture.wrapT = THREE.RepeatWrapping;
 				imgTexture.anisotropy = 16;
 				imgTexture = null;
-
+*/
   var toonMaterial = new THREE.MeshToonMaterial( {
-								map: imgTexture,
-								bumpMap: imgTexture,
-								bumpScale: 1,
+								// map: imgTexture,
+								//bumpMap: imgTexture,
+								//bumpScale: 1,
 								color: 0x4087ef,
 								specular: 0x333333,
 								reflectivity: 0.025,
